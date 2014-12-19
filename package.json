@@ -21,7 +21,7 @@
     "npm"
   ],
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha tests/test.*"
+    "test": "./node_modules/mocha/bin/mocha test"
   },
   "bin": {
     "onpm": "./bin/onpm"
