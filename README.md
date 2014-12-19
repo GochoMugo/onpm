@@ -1,5 +1,5 @@
 
-# onpm
+# onpm [![Coverage Status](https://img.shields.io/coveralls/GochoMugo/onpm.svg)](https://coveralls.io/r/GochoMugo/onpm)
 
 Offline Node Package Manager
 
