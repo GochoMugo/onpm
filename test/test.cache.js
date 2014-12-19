@@ -250,7 +250,7 @@ describe(".storeIntoCache()", function() {
     delete process.env.ONPM_CACHE;
   });
 
-  it.skip("should store package under a directory with its version as name",
+  it("should store package under a directory with its version as name",
   function(done) {
     cache.storeIntoCache("packageA", packageDir, function(err) {
       should(err).not.be.ok;

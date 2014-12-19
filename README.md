@@ -1,5 +1,5 @@
 
-# onpm [![Build Status](https://travis-ci.org/GochoMugo/onpm.svg?branch=develop)](https://travis-ci.org/GochoMugo/onpm) [![Coverage Status](https://img.shields.io/coveralls/GochoMugo/onpm.svg)](https://coveralls.io/r/GochoMugo/onpm)
+# onpm [![Build Status](https://travis-ci.org/GochoMugo/onpm.svg?branch=develop)](https://travis-ci.org/GochoMugo/onpm) [![Coverage Status](https://img.shields.io/coveralls/GochoMugo/onpm.svg)](https://coveralls.io/r/GochoMugo/onpm?branch=develop)
 
 Offline Node Package Manager
 

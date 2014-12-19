@@ -8,9 +8,16 @@
 
 
 // Module imports
+var logger = require("custom-logger");
 var debug = require("debug")("onpm:index");
 var lib = require("./lib");
 var path = require("path");
+
+
+// Configuring the Console logger
+logger.config({
+  format: "[%timestamp%] %event%: %padding% %message%"
+});
 
 
 /**
@@ -24,21 +31,19 @@ var path = require("path");
 */
 function installPackage(pkg, version) {
   debug("installing %s@%s", pkg, version);
+  logger.info("installing: " + pkg + "@" + (version || "latest"));
   version = version || "";
   // install from cache
   lib.cache.installFromCache(pkg, version, "", function(error) {
-    if (! error) {return console.log("installed");}
+    if (! error) {return logger.info("installed into node_modules: " + pkg);}
+    logger.warn("not in cache. installing using npm: " + pkg);
     // installing from npm
-    lib.npm.installPackage(pkg, version, function(error) {
-      if (error) {return console.log("npm failed");}
-      debug("No such package [%s] found in cache", pkg);
-      debug("installing %s using npm", pkg);
-      lib.npm.installPackage(pkg, function(error) {
-        if (error) {return console.log("Npm fucked: " + error);}
-        lib.storeIntoCache(pkg, function(error) {
-          if (error) {return console.log("could not store into cache");}
-          return console.log("stored into cache");
-        });
+    lib.npm.installPackage(pkg, {version: version}, function(error) {
+      if (error) {return logger.error("npm failed us. Error being, " + error);}
+      logger.info("installed into node_modules: " + pkg);
+      lib.cache.storeIntoCache(pkg, function(error) {
+        if (error) {return logger.error("could not store into cache: " + pkg);}
+        return logger.info("stored into cache: " + pkg);
       });
     });
   });
@@ -55,6 +60,7 @@ exports.installPackage = installPackage;
 */
 function installPackages() {
   debug("installing packages");
+  logger.info("processing packages");
   var regexp = /(.*)@(.*)/;
   for (var arg in arguments) {
     if (regexp.test(arguments[arg])) {
@@ -73,8 +79,9 @@ exports.installPackages = installPackages;
 */
 exports.upgrade = function() {
   debug("upgrading onpm");
-  childProcess.exec("npm install -g onpm", function(error) {
-    if (error) {return console.log("Could not upgrade");}
-    return console.log("upgraded");
+  logger.warn("Attempting to upgrade onpm (myself!)");
+  lib.npm.installPackage("onpm", {flags: "-g"}, function(error) {
+    if (error) {return logger.error("I could not upgrade!");}
+    return logger.info("Wow! I'm upgraded!");
   });
 };

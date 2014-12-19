@@ -9,7 +9,8 @@ var should = require("should");
 
 
 describe(".installPackage()", function() {
-  it("should install the package into the cwd");
+  it("should install the package from cache, if in cache");
+  it("should install the package from npm, if not in cache");
   it("should allow version be left out");
 });
 
