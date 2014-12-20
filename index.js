@@ -80,8 +80,8 @@ exports.installPackages = installPackages;
 exports.upgrade = function() {
   debug("upgrading onpm");
   logger.warn("Attempting to upgrade onpm (myself!)");
-  lib.npm.installPackage("onpm", {flags: "-g"}, function(error) {
-    if (error) {return logger.error("I could not upgrade!");}
+  lib.npm.installPackage("onpm", {flags: ["-g"]}, function(error) {
+    if (error) {return logger.error("I could not upgrade! May be I need sudo.");}
     return logger.info("Wow! I'm upgraded!");
   });
 };

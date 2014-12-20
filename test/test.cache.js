@@ -214,12 +214,28 @@ describe(".installFromCache()", function() {
     });
   });
 
-  it("should install package into path, if passed", function(done) {
+  it("should install in path, if options.directoryPath passed", function(done) {
     var test_node_modulesPath = __dirname + "/node_modules";
-    cache.installFromCache("packageA", "0.1.0", __dirname,
+    cache.installFromCache("packageA", "0.1.0", {directoryPath: __dirname},
     function(err) {
       should(err).not.be.ok;
       fs.existsSync(test_node_modulesPath + "/packageA").should.be.ok;
+      done();
+    });
+  });
+
+  it("should add package to package.json, if options.type is passed", 
+  function(done) {
+    var test_packageJson = __dirname + "/node_modules/packageA/package.json";
+    testUtils.writeJSON(test_packageJson, {});
+    cache.installFromCache("packageA", "0.1.0", {
+      directoryPath: __dirname, type: "dependencies"
+    }, function(error) {
+      should(error).not.be.ok;
+      fs.existsSync(test_packageJson).should.be.ok;
+      var json;
+      should(json = require(test_packageJson)).be.ok;
+      json.should.containEql({"dependencies": {"packageA": "^0.1.0"}});
       done();
     });
   });
