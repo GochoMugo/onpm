@@ -55,7 +55,8 @@ exports.remove = function(cachePath) {
 * THROWS ERROR
 *
 * @param  {String} directoryPath
+* @param  {JSON|Object} content
 */
-exports.writeJSON = function(directoryPath, json) {
-  fs.writeFileSync(directoryPath, json);
+exports.writeJSON = function(directoryPath, content) {
+  fs.writeFileSync(directoryPath, JSON.stringify(content));
 };
