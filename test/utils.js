@@ -58,5 +58,12 @@ exports.remove = function(cachePath) {
 * @param  {JSON|Object} content
 */
 exports.writeJSON = function(directoryPath, content) {
-  fs.writeFileSync(directoryPath, JSON.stringify(content));
+  var json;
+  try {
+    JSON.parse(content);
+    json = content;
+  } catch (e) {
+    json = JSON.stringify(content);
+  }
+  fs.writeFileSync(directoryPath, json);
 };

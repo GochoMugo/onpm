@@ -254,7 +254,6 @@ describe(".storeIntoCache()", function() {
   function(done) {
     cache.storeIntoCache("packageA", packageDir, function(err) {
       should(err).not.be.ok;
-      console.log(fs.readdirSync(cachePath));
       fs.existsSync(cachePath + "/packageA/0.9.0").should.be.ok;
       done();
     });
