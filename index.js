@@ -36,6 +36,9 @@ function installPackage(pkg, version) {
   // install from cache
   lib.cache.installFromCache(pkg, version, "", function(error) {
     if (! error) {return logger.info("installed into node_modules: " + pkg);}
+    if (error instanceof lib.errors.PackageVersionNotFoundError) {
+      return logger.error(error.message);
+    }
     logger.warn("not in cache. installing using npm: " + pkg);
     // installing from npm
     lib.npm.installPackage(pkg, {version: version}, function(error) {
