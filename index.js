@@ -31,22 +31,20 @@ logger.config({
 */
 function installPackage(pkg, version) {
   debug("installing %s@%s", pkg, version);
-  logger.info("installing: " + pkg + "@" + (version || "latest"));
+  var name = pkg + "@" + (version || "latest");
+  logger.info("installing: " + name);
   version = version || "";
   // install from cache
   lib.cache.installFromCache(pkg, version, "", function(error) {
-    if (! error) {return logger.info("installed into node_modules: " + pkg);}
-    if (error instanceof lib.errors.PackageVersionNotFoundError) {
-      return logger.error(error.message);
-    }
-    logger.warn("not in cache. installing using npm: " + pkg);
+    if (! error) {return logger.info("installed into node_modules: " + name);}
+    logger.warn("not in cache. installing using npm: " + name);
     // installing from npm
     lib.npm.installPackage(pkg, {version: version}, function(error) {
       if (error) {return logger.error("npm failed us. Error being, " + error);}
-      logger.info("installed into node_modules: " + pkg);
+      logger.info("installed into node_modules: " + name);
       lib.cache.storeIntoCache(pkg, function(error) {
-        if (error) {return logger.error("could not store into cache: " + pkg);}
-        return logger.info("stored into cache: " + pkg);
+        if (error) {return logger.error("could not store into cache: " + name);}
+        return logger.info("stored into cache: " + name);
       });
     });
   });
@@ -63,6 +61,7 @@ exports.installPackage = installPackage;
 */
 function installPackages() {
   debug("installing packages");
+  if (! arguments[0]) {return logger.error("No package to install")}
   logger.info("processing packages");
   var regexp = /(.*)@(.*)/;
   for (var arg in arguments) {
