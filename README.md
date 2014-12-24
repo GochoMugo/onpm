@@ -1,5 +1,5 @@
 
-# onpm [![Build Status](https://travis-ci.org/GochoMugo/onpm.svg?branch=develop)](https://travis-ci.org/GochoMugo/onpm) [![Coverage Status](https://img.shields.io/coveralls/GochoMugo/onpm.svg)](https://coveralls.io/r/GochoMugo/onpm?branch=develop)
+# onpm [![Build Status](https://travis-ci.org/GochoMugo/onpm.svg?branch=develop)](https://travis-ci.org/GochoMugo/onpm) [![Coverage Status](https://img.shields.io/coveralls/GochoMugo/onpm.svg)](https://coveralls.io/r/GochoMugo/onpm?branch=develop) [![Dependency Status](https://gemnasium.com/GochoMugo/onpm.svg)](https://gemnasium.com/GochoMugo/onpm)
 
 Offline Node Package Manager
 
@@ -15,8 +15,8 @@ versions of Node.js packages locally.
 |Node|0.11, 0.10|
 |OS Support|Linux, Windows|
 
-If _ALL_ tests run well on your machine and suffers no adverse problems,
-you may request it be added to the list above.
+> If _ALL_ tests run well on your machine and suffers no adverse problems,
+> you may request it be added to the compatability list above.
 
 
 ## installation
@@ -30,11 +30,50 @@ Lastest, Not-So-Stable: `⇒ [sudo] npm install --global git+https://github.com/
 
 __Installing packages has never been easier__.
 
-```shell
+If a package you installing has not yet been stored in cache, it will be
+ installed using npm.
+
+```bash
 ⇒ onpm express
 
-checking cache...
+[09:26:15] info:      processing packages
+[09:26:15] info:      installing: express@latest
+[09:26:15] warning:   not in cache. installing using npm: express@latest
+[09:26:52] info:      installed into node_modules: express@latest
+[09:26:53] info:      stored into cache: express@latest
 ```
+
+Once it is stored in cache, you can install it again directly from cache.
+
+```bash
+⇒  onpm install express
+[09:33:13] info:      processing packages
+[09:33:13] info:      installing: express@latest
+[09:33:14] info:      installed into node_modules: express@latest
+```
+
+You can also have it saved to the project's `package.json`.
+```bash
+⇒  onpm install express --save
+
+
+```
+
+
+## help information
+
+```bash
+⇒  onpm help
+OFFLINE Node Package Manager
+
+ help             show this help information
+ install <pkg>    install packages from cache/registry
+ upgrade          upgrade ONPM itself
+ version          show version information
+
+See https://github.com/GochoMugo/onpm for more information
+```
+
 
 ## contribution
 

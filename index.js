@@ -28,18 +28,22 @@ logger.config({
 *
 * @param  {String}  pkg
 * @param  {String}  version
+* @param  {Object}  options
 */
-function installPackage(pkg, version) {
+function installPackage(pkg, version, options) {
   debug("installing %s@%s", pkg, version);
-  var name = pkg + "@" + (version || "latest");
+  var name = pkg + "@" + version;
   logger.info("installing: " + name);
   version = version || "";
   // install from cache
-  lib.cache.installFromCache(pkg, version, "", function(error) {
+  lib.cache.installFromCache(pkg, version, options, function(error) {
     if (! error) {return logger.info("installed into node_modules: " + name);}
     logger.warn("not in cache. installing using npm: " + name);
     // installing from npm
-    lib.npm.installPackage(pkg, {version: version}, function(error) {
+    var npmOptions = {};
+    npmOptions.version = version;
+    npmOptions.flags = [options.type || ""];
+    lib.npm.installPackage(pkg, npmOptions, function(error) {
       if (error) {return logger.error("npm failed us. Error being, " + error);}
       logger.info("installed into node_modules: " + name);
       lib.cache.storeIntoCache(pkg, function(error) {
@@ -63,13 +67,16 @@ function installPackages() {
   debug("installing packages");
   if (! arguments[0]) {return logger.error("No package to install")}
   logger.info("processing packages");
+  var options = {};
+  if (this.save) {options.type = "--save";}
+  if (this.save_dev) {options.type = "--save-dev";}
   var regexp = /(.*)@(.*)/;
   for (var arg in arguments) {
     if (regexp.test(arguments[arg])) {
       var parts = regexp.exec(arguments[arg]);
-      installPackage(parts[1], parts[2]);
+      installPackage(parts[1], parts[2], options);
     } else {
-      installPackage(arguments[arg]);
+      installPackage(arguments[arg], "latest", options);
     }
   }
 }
